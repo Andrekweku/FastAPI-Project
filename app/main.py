@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = ["*"]  # ["https://www.google.com"] #only domains you want acces to your API
+origins = ["*"]  # ["https://www.google.com"] #only domains you want access to your API
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,7 +29,7 @@ app.include_router(vote.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World !!!!!"}
+    return {"message": "Hello World"}
 
 
 # while True:
