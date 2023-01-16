@@ -16,18 +16,7 @@ def get_posts(
     skip: int = 0,
     search: Optional[str] = "",
 ):
-    # cursor.execute("""SELECT * FROM public."Posts" """)
-    # posts = cursor.fetchall()
-
-    # posts = (
-    #     db.query(models.Post)
-    #     .filter(models.Post.title.contains(search))
-    #     .limit(limit)
-    #     .offset(skip)
-    #     .all()
-    # )  # .all() to return all the results
-    # To get only posts for a specific logged in user USE ->
-    # posts = db.query(models.Post).filter(models.Post.owner_id == current_user.id).all()
+    
     posts = (
         db.query(models.Post, func.count(models.Vote.post_id).label("votes"))
         .join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True)
@@ -40,30 +29,13 @@ def get_posts(
     return posts
 
 
-# def find_post(id):
-#     for p in my_posts:
-#         if p["id"] == id:
-#             return p
-
-
-# def find_index_post(id):
-#     for i, p in enumerate(my_posts):
-#         if p["id"] == id:
-#             return i
-
-
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_posts(
     post: schemas.PostCreate,
     db: Session = Depends(get_db),
     current_user: int = Depends(Oauth2.get_current_user),
 ):
-    # cursor.execute(
-    #     """INSERT INTO "Posts" (title, content, published) VALUES (%s, %s, %s) RETURNING * """,
-    #     (post.title, post.content, post.published),
-    # )
-    # new_post = cursor.fetchone()
-    # conn.commit()
+    
     print(current_user.email)
     new_post = models.Post(owner_id=current_user.id, **post.dict())
     # title=post.title, content=post.content, published=post.published
@@ -73,10 +45,7 @@ def create_posts(
     db.refresh(new_post)  # Just like RETURNING in SQL
     return new_post
 
-    # post_dict = post.dict()
-    # post_dict["id"] = randrange(0, 1000000)
-    # my_posts.append(post_dict)
-
+ 
 
 @router.get("/{id}", response_model=schemas.PostOut)
 def get_post(
@@ -100,18 +69,7 @@ def get_post(
             detail=f"Post with id: {id} was not found.",
         )
 
-    # if post.owner_id != current_user.id:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_403_FORBIDDEN,
-    #         detail="Not authorized to perform requested action",
-    #     ) # Checking if the logged in user owns this post
-
     return post
-
-
-# in if statement..
-# response.status_code = status.HTTP_404_NOT_FOUND
-# return {"Message": f"Post with id: {id} was not found."}
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -120,11 +78,7 @@ def delete_post(
     db: Session = Depends(get_db),
     current_user: int = Depends(Oauth2.get_current_user),
 ):
-    # cursor.execute(
-    #     """ DELETE FROM public."Posts" WHERE id = %s RETURNING * """, (str(id),)
-    # )
-    # deleted_post = cursor.fetchone()
-    # conn.commit()
+  
     post_query = db.query(models.Post).filter(
         models.Post.id == id
     )  # Were defining the query here
@@ -157,13 +111,7 @@ def update_post(
     db: Session = Depends(get_db),
     current_user: int = Depends(Oauth2.get_current_user),
 ):
-    # index = find_index_post(id)
-    # cursor.execute(
-    #     """ UPDATE public."Posts" SET title= %s, content= %s, published=%s WHERE id = %s RETURNING * """,
-    #     (post.title, post.content, post.published, str(id)),
-    # )
-    # updated_post = cursor.fetchone()
-    # conn.commit()
+
 
     post_query = db.query(models.Post).filter(models.Post.id == id)
 
