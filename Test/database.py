@@ -9,7 +9,7 @@ from app.config import settings
 
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}_test"
-# SQLALCHEMY_DATABASE_URL = "postgresql://postgres:password123@localhost:5432/Fastapi_test"
+
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
@@ -52,5 +52,3 @@ def client(session):
     #run our code before we run our test
     # Base.metadata.create_all(bind=engine)
     yield  TestClient(app)
-    # Base.metadata.drop_all(bind=engine) - you can use this too and delete the one above
-    #run our code after our test finishes
