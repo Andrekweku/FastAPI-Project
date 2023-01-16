@@ -10,9 +10,6 @@ Next to install all the packages used in this program, please run:
 
 > pip install -r requirements.txt 
 
-- Once all the packages are installed, `cd..` into `apidemo`
-> cd apidemo
-
 - Create a '.env' file and add your environment configs listed in the `config.py` to the '.env' file.
 
 - Run `uvicorn app.main:app --reload` to start your program in localhost.
