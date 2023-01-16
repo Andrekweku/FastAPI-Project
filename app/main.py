@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # models.Base.metadata.create_all(bind=engine) -- alembic has replaced this
 
-app = FastAPI()
+app = FastAPI(title = "Social Media API", description= "Social Media API with feature to Vote on Posts")
 
 origins = ["*"]  # ["https://www.google.com"] #only domains you want access to your API
 
